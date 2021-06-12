@@ -3,12 +3,15 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
+from .decorators import check_logged
+
 
 #blue print to create the endpoints
 accounts = Blueprint('accounts', __name__)
 
 
 @accounts.route('/login', methods=['GET', 'POST'])
+@check_logged
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -30,6 +33,7 @@ def login():
 
 
 @accounts.route('/register', methods=['GET', 'POST'])
+@check_logged
 def register():
     if request.method == 'POST':
         #getting form data
